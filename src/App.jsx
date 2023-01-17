@@ -1,6 +1,7 @@
 import { initializeApp} from "firebase/app"; 
-import { getDocs, getFirestore, collection, addDoc} from "firebase/firestore"; 
+import { getDocs, getFirestore, collection, addDoc, doc, deleteDoc} from "firebase/firestore"; 
 import { useEffect, useState } from "react";
+import './App.css'
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyCKmEnFL-86zHEdGfuwAcQIL6h6B86rqNQ",
@@ -20,7 +21,6 @@ export const App = () => {
     const user = await addDoc(userCollectionRef, {
       name, email,
     })
-
   }
 
 
@@ -34,21 +34,29 @@ export const App = () => {
     getUsers()
   })
 
+  async function deleteUser(id){
+    const userDoc = doc(db, 'users', id);
+    await deleteDoc(userDoc)
+  }
+
   return (
-    <div>
-      <input type="text" placeholder="Nome" value={name} onChange={(e) => setName(e.target.value)} />
-      <input type="text" placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <button onClick={createUser}>Criar usuario</button>
+    <div className="container">
+      <div className="formAddUser">
+        <input type="text" placeholder="Nome" value={name} onChange={(e) => setName(e.target.value)} />
+        <input type="text" placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <button onClick={createUser}>Criar usuario</button>
+        </div>
       <ul>
         {users.map((user) => {
           return (
-            <div key={user.id}>
+          <div key={user.id}>
             <li>
               {user.name}
             </li>
             <li>
               {user.email}
             </li>
+            <button onClick={() => deleteUser(user.id)}>Deletar usuario</button>
           </div>
           )
           
