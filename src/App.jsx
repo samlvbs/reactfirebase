@@ -42,27 +42,32 @@ export const App = () => {
   return (
     <div className="container">
       <div className="formAddUser">
+        <h1>Adicionar usuario</h1>
         <input type="text" placeholder="Nome" value={name} onChange={(e) => setName(e.target.value)} />
         <input type="text" placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)} />
         <button onClick={createUser}>Criar usuario</button>
         </div>
-      <ul>
-        {users.map((user) => {
-          return (
-          <div key={user.id}>
-            <li>
-              {user.name}
-            </li>
-            <li>
-              {user.email}
-            </li>
-            <button onClick={() => deleteUser(user.id)}>Deletar usuario</button>
-          </div>
-          )
-          
-        }) 
-        }
-      </ul>
+      <h2>Usuarios adicionados</h2>
+      <table className="tabUsers">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Deletar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) =>{
+            return (
+              <tr>
+                <th>{user.name}</th>
+                <th>{user.email}</th>
+                <th><button className="buttonRed" onClick={() => deleteUser(user.id)}>X</button></th>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
     </div>
   )
 }
